@@ -1,0 +1,41 @@
+{
+    "version": 2,
+    "env": {
+    },
+    "builds": [
+      {
+        "src": "server/build/app.js",
+        "use": "@vercel/node",
+        "config": { "includeFiles": ["server/build/**"] }
+      },
+      {
+        "src": "web/dist/**",
+        "use": "@vercel/static",
+        "config": { "includeFiles": ["web/dist/**"] }
+      }
+    ],
+    "routes": [
+    { "handle": "filesystem" },
+      
+      {
+        "src": "/api/(.*)",
+        "dest": "server/build/app.js"
+      },
+      {
+        "src": "/",
+        "dest": "web/dist/index.html"
+      },
+      {
+        "src": "/sd/(.+)",
+        "dest": "web/dist/index.html"
+      },
+      {
+        "src": "/dist/(.+)",
+        "dest": "web/dist/$1"
+      },
+      {
+        "src": "main.wasm",
+        "dest": "web/dist/$1"
+      }
+    ]
+  }
